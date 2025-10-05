@@ -109,26 +109,26 @@
 			}
 			container.innerHTML = await data.slice(0, -1).map(item => `
 				<div class="walk"></div>
-					<p style='margin: 0 15px; color: #dddddd; font-size: 16px'>Walk ${item.walk}m</p>
+					<p style='margin: 0 15px; color: #dddddd; font-size: 15px'>Walk ${item.walk}m</p>
 				<div class="walk"></div>
 				<div class="app-zone">
 					<div class="app-name">${item.application}</div>
 					<div class="zone-name">${item.zone}</div>
 					<table>
 						<tr>
-							<td style='color: #aaa'>Start: </td>
-							<td>${item.station1}</td>
+							<td style='color: #aaa' align='right'>From:</td>
+							<td style='margin-left: 8px'>${item.station1}</td>
 						</tr>
 						<tr>
-							<td style='color: #aaa'>End: </td>
-							<td>${item.station2}</td>
+							<td style='color: #aaa' align='right'>To:</td>
+							<td style='margin-left: 8px'>${item.station2}</td>
 						</tr>
 					</table>
 				</div>
 			`).join("");
 			container.innerHTML += `
 				<div class="walk"></div>
-					<p style='margin: 0 15px; color: #dddddd; font-size: 16px'>
+					<p style='margin: 0 15px; color: #dddddd; font-size: 15px'>
 						Walk ${data[data.length-1].walk}m to destination
 					</p>`;
 		}
