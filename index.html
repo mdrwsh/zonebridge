@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tautika</title>
+<style>
+  body {
+    margin: 0;
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: #111;
+    color: #eee;
+  }
+  #top-bar {
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    background: #222;
+    flex: 0 0 20%;
+  }
+  input {
+    margin: 4px 0;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    background: #333;
+    color: #fff;
+  }
+    button {
+        padding: 10px;
+        border: none;
+        border-radius: 6px;
+        font-size: 1em;
+        background: #2956b8;
+        color: #f5f5f5;
+        cursor: pointer;
+        margin-top: 8px;
+    }
+    button:hover {
+        background: #3062cd;
+    }
+    button:active {
+        background: #467ee7;
+    }
+  #results {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+  }
+  .app-zone {
+    margin-bottom: 16px;
+    background: #1b1b1b;
+    border-radius: 8px;
+    padding: 10px;
+  }
+  .app-name {
+    font-weight: bold;
+    color: rgb(117, 164, 226);
+  }
+  .zone-name {
+    font-size: 0.9em;
+    color: #aaa;
+  }
+  .route {
+    margin-top: 6px;
+    padding-left: 10px;
+  }
+</style>
+</head>
+<body>
+  <div id="top-bar">
+    <input id="origin" placeholder="Origin">
+    <input id="destination" placeholder="Destination">
+    <button onclick="searchRoutes()">Search</button>
+  </div>
+
+  <div id="results">
+    <!-- Placeholder example -->
+    <div class="app-zone">
+      <div class="app-name">Mobi</div>
+      <div class="zone-name">T466 UNITEN/Bangi</div>
+      <div class="route">Start: KJ510 MRT Kajang</div>
+      <div class="route">End: JPJ Bangi</div>
+    </div>
+  </div>
+
+  <script src="zonebridge.js"></script>
+<script>
+  // Called when the user submits a search
+  async function searchRoutes() {
+    const origin = document.getElementById('origin').value.trim();
+    const destination = document.getElementById('destination').value.trim();
+    result = await findPath(origin, destination);
+    console.log("Search result:", result);
+    await displayResults(result);
+    // console.log("Search result:", result);
+  }
+
+  // Called to render the search results in #results
+  async function displayResults(data) {
+    const container = document.getElementById('results');
+    container.innerHTML = "";
+    console.log("Displaying results:", data);
+    if (!data || data.length === 0) {
+      container.innerHTML = "<p>No routes found.</p>";
+      return;
+    }
+    container.innerHTML = await data.map(item => `
+      <div class="app-zone">
+        <div class="app-name">${item.application}</div>
+        <div class="zone-name">${item.zone}</div>
+        <div class="route">Start: ${item.station1}</div>
+        <div class="route">End: ${item.station2}</div>
+      </div>
+    `).join("");
+    // TODO: populate results grouped by application and zone
+  }
+
+  // Called on page load to prepare events
+  window.onload = () => {
+    // TODO: attach search triggers (e.g. on input change)
+  };
+</script>
+</body>
+</html>
