@@ -17,8 +17,9 @@
 		display: flex;
 		flex-direction: column;
 		padding: 8px;
+		padding-top: 30px;
 		background: #222;
-		flex: 0 0 20%;
+		/* flex: 0 0 20%; */
 	}
 	input {
 		margin: 4px 0;
@@ -48,7 +49,8 @@
 	#results {
 		flex: 1;
 		overflow-y: auto;
-		padding: 10px;
+		padding: 4px 10px;
+		margin-bottom: 20px;
 	}
 	.app-zone {
 		margin: 5px;
@@ -70,10 +72,10 @@
 		font-size: 0.9em;
 		color: #aaa;
 		margin-bottom: 15px;
+		margin-top: 4px;
 	}
 	.route {
 		margin-top: 6px;
-		padding-left: 10px;
 	}
 </style>
 </head>
@@ -83,18 +85,9 @@
 		<input id="destination" placeholder="Destination">
 		<button onclick="searchRoutes()">Search</button>
 	</div>
-	<div id="results">
-		<!-- Placeholder example -->
-		<!-- <div class="app-zone">
-			<div class="app-name">Mobi</div>
-			<div class="zone-name">T466 UNITEN/Bangi</div>
-			<div class="route">Start: KJ510 MRT Kajang</div>
-			<div class="route">End: JPJ Bangi</div>
-		</div>
-		// add intermediate walking div here
-		<div class="walk"></div> -->
-	</div>
-	<script src="zonebridge.js"></script>
+	<div id="results"></div>
+
+	<script src="zonebridge.js?v=<?php echo time(); ?>"></script>
 	<script>
 		async function searchRoutes() {
 			const container = document.getElementById('results');
@@ -114,22 +107,31 @@
 				container.innerHTML = "<p>No routes found.</p>";
 				return;
 			}
-			container.innerHTML = await data.map(item => `
+			container.innerHTML = await data.slice(0, -1).map(item => `
 				<div class="walk"></div>
 					<p style='margin: 0 15px; color: #dddddd; font-size: 16px'>Walk ${item.walk}m</p>
 				<div class="walk"></div>
 				<div class="app-zone">
 					<div class="app-name">${item.application}</div>
 					<div class="zone-name">${item.zone}</div>
-					<div class="route">Start: ${item.station1}</div>
-					<div class="route">End: ${item.station2}</div>
+					<table>
+						<tr>
+							<td style='color: #aaa'>Start: </td>
+							<td>${item.station1}</td>
+						</tr>
+						<tr>
+							<td style='color: #aaa'>End: </td>
+							<td>${item.station2}</td>
+						</tr>
+					</table>
 				</div>
 			`).join("");
+			container.innerHTML += `
+				<div class="walk"></div>
+					<p style='margin: 0 15px; color: #dddddd; font-size: 16px'>
+						Walk ${data[data.length-1].walk}m to destination
+					</p>`;
 		}
-
-		window.onload = () => {
-			// TODO: attach search triggers (e.g. on input change)
-		};
 	</script>
 </body>
 </html>

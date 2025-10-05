@@ -104,7 +104,7 @@ async function findPath(start, target) {
     if(currentLine.length>1) finalPath.push(currentLine);
 
     // Print routes
-    result = [];
+    let result = [];
     let last = "-1";
     finalPath.forEach((line,n)=>{
         const st1 = stationList[line[0]], st2 = stationList[line[line.length-1]];
@@ -121,6 +121,9 @@ async function findPath(start, target) {
         console.log(`  ${st2.station} ${st2.coordinate}`);
         last = line[line.length-1];
     });
-    console.log(`(Walk ${graph[path[path.length-2]][path[path.length-1]]}m)`);
+    result.push({walk: graph[last]["-2"]});
+    console.log(`(Walk ${graph[last]["-2"]}m)`);
+    console.log(`Result: ${result}`);
+    console.log("duh");
     return result;
 };
