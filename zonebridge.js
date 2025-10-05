@@ -109,6 +109,7 @@ async function findPath(start, target) {
     finalPath.forEach((line,n)=>{
         const st1 = stationList[line[0]], st2 = stationList[line[line.length-1]];
         result.push({
+            walk: graph[last][line[0]],
             application: st1.application,
             zone: st1.zone,
             station1: st1.station,
